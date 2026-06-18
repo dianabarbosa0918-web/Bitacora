@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitácora de Alistamiento · Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--red:#C8102E;--navy:#1F3864;--ink:#1a1d24;--muted:#6b7280;--line:#e6e8ec;--bg:#f4f5f7;--card:#fff;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:13px}
+header{background:var(--red);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:18px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+header img{height:42px;background:#fff;padding:4px 8px;border-radius:6px}
+header .t{font-weight:800;font-size:19px;letter-spacing:.3px;line-height:1.1}
+header .s{font-size:11px;opacity:.85;font-weight:500;letter-spacing:1.5px;text-transform:uppercase}
+.upload{margin-left:auto;display:flex;align-items:center;gap:10px}
+.btn{background:#fff;color:var(--red);border:none;padding:9px 16px;border-radius:8px;font-weight:800;cursor:pointer;font-size:12px}
+.btn:hover{background:#ffe9ec}
+.up-note{font-size:10.5px;opacity:.9;max-width:160px;line-height:1.3}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 22px 40px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-left:4px solid var(--navy);transition:.15s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.kpi.green{border-left-color:#46A05A}.kpi.blue{border-left-color:#5B9BD5}.kpi.red{border-left-color:var(--red)}.kpi.orange{border-left-color:#E8743B}
+.kpi .n{font-size:30px;font-weight:800;line-height:1}.kpi .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:6px;font-weight:600}
+.grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.panel h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--navy);font-weight:700}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.filters label{font-size:11px;color:var(--muted);font-weight:600;margin-right:4px}
+select,input{font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+input{min-width:160px}
+.clear{margin-left:auto;background:var(--navy);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{background:var(--red);color:#fff;text-align:left;padding:10px 12px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+tbody td{padding:8px 12px;border-bottom:1px solid var(--line)}
+tbody tr:hover{background:#f9fafb}
+.chip{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.count{font-size:11px;color:var(--muted);margin-top:10px;font-weight:600}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 20px;border-radius:10px;font-weight:700;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.2);opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1}
+.toast.err{background:var(--red)}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.up-note{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <img src="data:image/png;base64,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" alt="Nissan Posventa">
+  <div>
+    <div class="t">Bitácora de Alistamiento</div>
+    <div class="s">Posventa Nissan · Barranquilla</div>
+  </div>
+  <div class="upload">
+    <span class="up-note">Sube tu Excel para actualizar los datos</span>
+    <button class="btn" onclick="document.getElementById('file').click()">⬆ Subir Excel</button>
+    <input type="file" id="file" accept=".xlsx,.xlsm" style="display:none">
+  </div>
+</header>
+<div class="wrap">
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="panel"><h3>Vehículos por estado</h3><canvas id="cEstado" height="200"></canvas></div>
+    <div class="panel"><h3>Por vitrina</h3><canvas id="cVitrina" height="200"></canvas></div>
+    <div class="panel"><h3>Por modelo</h3><canvas id="cModelo" height="200"></canvas></div>
+  </div>
+  <div class="filters">
+    <div><label>Mes</label><select id="fMes"></select></div>
+    <div><label>Estado</label><select id="fEstado"></select></div>
+    <div><label>Vitrina</label><select id="fVitrina"></select></div>
+    <div><label>Modelo</label><select id="fModelo"></select></div>
+    <div><label>Registro desde</label><input type="date" id="fDesde"></div>
+    <div><label>hasta</label><input type="date" id="fHasta"></div>
+    <div><label>Buscar</label><input id="fBuscar" placeholder="OT o inventario..."></div>
+    <button class="clear" onclick="clearF()">Limpiar</button>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Mes</th><th>OT</th><th>Inventario</th><th>Modelo</th><th>Color</th><th>Vitrina</th>
+      <th>A cargo de</th><th>Fecha registro</th><th>Estado</th><th>Días SLA</th><th>Fecha est. entrega</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="count" id="count"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+let DATA = [{"estado": "2. VEHÍCULO ASIGNADO", "inv": "355846", "modelo": "KICKS P15", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049153", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361267", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049138", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361292", "modelo": "KICKS P16", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049227", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "362927", "modelo": "SENTRA", "vitrina": "PRADO", "color": "GRIS", "cargo": "VITRINA", "ot": "73049229", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361630", "modelo": "KAIT", "vitrina": "PRADO", "color": "GRIS", "cargo": "VITRINA", "ot": "73049230", "sla": 3, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "13158", "modelo": "DEEPAL SO7", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049241", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "345546", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049232", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361300", "modelo": "KICKS P16", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049231", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "357547", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049233", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "363157", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049234", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361669", "modelo": "KAIT", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049235", "sla": 3, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361207", "modelo": "QASHQAI", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049237", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363570", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049249", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363271", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049252", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363256", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "PLATA", "cargo": "CLIENTE", "ot": "73049251", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363297", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049253", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363600", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049254", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363368", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049256", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363471", "modelo": "VERSA", "vitrina": "PRADO", "color": "ROJO", "cargo": "CLIENTE", "ot": "73049257", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363154", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049261", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361680", "modelo": "KAIT", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049258", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "12677", "modelo": "G318", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049262", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "12954", "modelo": "S05", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049259", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "13473", "modelo": "S05", "vitrina": "CIRCUNVALAR", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049260", "sla": 3, "mes": "JUNIO"}];
+const SC={"1. INSPECCIÓN VEHÍCULO":"#9E9E9E","2. VEHÍCULO ASIGNADO":"#5B9BD5","3. APLICACIÓN ANTICORROSIVO":"#4A86C7","4. PROCESO MECÁNICA":"#3B73B9","5. INSTALACIÓN DE ACCESORIOS":"#2E63A6","6. PROCESO EMBELLECIMIENTO":"#1F4E8C","ALISTAMIENTO DETENIDO":"#E8743B","7. ENTREGADO A LOGÍSTICA":"#46A05A"};
+const MESES=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE","INICIAL"];
+function norm(s){return (s==null?'':''+s).replace(/\u00a0/g,' ').trim()}
+function normEstado(v){v=norm(v).toUpperCase();
+  const m=[["INSPEC","1. INSPECCIÓN VEHÍCULO"],["ASIGNADO","2. VEHÍCULO ASIGNADO"],["ANTICORROSIVO","3. APLICACIÓN ANTICORROSIVO"],["MEC","4. PROCESO MECÁNICA"],["INSTALAC","5. INSTALACIÓN DE ACCESORIOS"],["EMBELLEC","6. PROCESO EMBELLECIMIENTO"],["DETENIDO","ALISTAMIENTO DETENIDO"],["ENTREGADO","7. ENTREGADO A LOGÍSTICA"]];
+  for(const[k,f]of m)if(v.includes(k))return f; return norm(v)}
+
+function parseFecha(s){s=norm(s);if(!s)return null;
+  let m=s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  if(m){let y=+m[3];if(y<100)y+=2000;return new Date(y,(+m[2])-1,+m[1]);}
+  let d=new Date(s);return isNaN(d)?null:d;}
+function fmtFecha(s){const d=parseFecha(s);if(!d)return '';
+  return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();}
+function chipBg(e){return (SC[e]||"#999")+"22"} function chipFg(e){return SC[e]||"#555"}
+function toast(msg,err){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(err?' err':'');setTimeout(()=>t.className='toast',2600)}
+
+// ---------- subir y aplanar Excel ----------
+document.getElementById('file').addEventListener('change',function(e){
+  const f=e.target.files[0]; if(!f)return;
+  const rd=new FileReader();
+  rd.onload=function(ev){
+    try{
+      const wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array'});
+      let sh=wb.SheetNames.find(n=>n.toUpperCase().includes('ALISTAMIENTO'))||wb.SheetNames[0];
+      const A=XLSX.utils.sheet_to_json(wb.Sheets[sh],{header:1,raw:false,defval:''});
+      const parsed=flatten(A);
+      if(parsed.length===0){toast('No encontré filas con OT en la hoja',true);return}
+      DATA=parsed; initFilters(); render();
+      toast('✔ Datos actualizados: '+parsed.length+' vehículos');
+    }catch(err){console.error(err);toast('No pude leer el archivo',true)}
+  };
+  rd.readAsArrayBuffer(f);
+});
+// detecta la fila de encabezado, mapea columnas por nombre, arrastra el mes de las bandas
+function flatten(A){
+  // localizar fila de encabezados (la que contiene "OT" y "ESTADO")
+  let hr=-1;
+  for(let i=0;i<Math.min(A.length,15);i++){
+    const up=A[i].map(x=>norm(x).toUpperCase());
+    if(up.includes('OT')&&up.some(c=>c.includes('ESTADO'))){hr=i;break}
+  }
+  if(hr<0)hr=0;
+  const head=A[hr].map(x=>norm(x).toUpperCase());
+  const col=(...names)=>{
+    for(const n of names){const i=head.findIndex(h=>h===n);if(i>=0)return i}
+    for(const n of names){const i=head.findIndex(h=>h.includes(n));if(i>=0)return i}
+    return -1};
+  const cOT=col('OT'),cEst=col('ESTADO'),cInv=col('INVENTARIO'),cMod=col('MODELO'),
+   cVit=col('VITRINA'),cCol=col('COLOR'),cCar=col('CARGO'),cSla=col('SLA'),
+   cReg=col('FECHA REGISTRO','REGISTRO'),cEnt=col('FECHA EST. ENTREGA','ENTREGA');
+  let mes='';
+  for(let i=0;i<hr;i++){const j=(A[i]||[]).map(norm).join(' ').toUpperCase();
+    const fm=MESES.find(m=>j.includes(m));if(fm)mes=fm.charAt(0)+fm.slice(1).toLowerCase();}
+  let out=[];
+  for(let i=hr+1;i<A.length;i++){
+    const row=A[i]; if(!row)continue;
+    const joined=row.map(norm).join(' ').toUpperCase();
+    // banda de mes (no tiene OT numérico, pero menciona un mes)
+    const found=MESES.find(m=>joined.includes(m));
+    const inv=norm(row[cInv]);
+    const ot=norm(row[cOT]);
+    // es fila de datos si el INVENTARIO tiene contenido y la fila no es banda ni encabezado
+    const esEncabezado = norm(row[cEst]).toUpperCase()==='ESTADO' || norm(row[cInv]).toUpperCase()==='INVENTARIO';
+    const isData = inv!=='' && !esEncabezado;
+    if(!isData){ if(found) mes=found.charAt(0)+found.slice(1).toLowerCase(); continue; }
+    out.push({mes:mes||'(sin mes)',ot:ot,inv:norm(row[cInv]),modelo:norm(row[cMod]).toUpperCase(),
+      vitrina:norm(row[cVit]).toUpperCase(),color:norm(row[cCol]).toUpperCase(),
+      cargo:norm(row[cCar]).toUpperCase(),estado:normEstado(row[cEst]),
+      sla:(cSla>=0?norm(row[cSla]):''),
+      freg:(cReg>=0?norm(row[cReg]):''),fent:(cEnt>=0?norm(row[cEnt]):'')});
+  }
+  return out;
+}
+
+// ---------- filtros y render ----------
+const uniq=(k)=>[...new Set(DATA.map(r=>r[k]).filter(Boolean))].sort();
+function fillSel(id,vals,lbl){const s=document.getElementById(id);const cur=s.value;
+  s.innerHTML='<option value="">'+lbl+'</option>'+vals.map(v=>`<option ${v===cur?'selected':''}>${v}</option>`).join('');s.onchange=render}
+function initFilters(){fillSel('fMes',uniq('mes'),'Todos');fillSel('fEstado',uniq('estado'),'Todos');
+  fillSel('fVitrina',uniq('vitrina'),'Todas');fillSel('fModelo',uniq('modelo'),'Todos');}
+document.getElementById('fBuscar').oninput=render;
+document.getElementById('fDesde').onchange=render;document.getElementById('fHasta').onchange=render;
+function clearF(){['fMes','fEstado','fVitrina','fModelo','fDesde','fHasta'].forEach(i=>document.getElementById(i).value='');document.getElementById('fBuscar').value='';render()}
+let charts={};
+function filtered(){const ms=fMes.value,e=fEstado.value,v=fVitrina.value,m=fModelo.value,q=fBuscar.value.trim().toLowerCase();
+  const d1=fDesde.value?new Date(fDesde.value):null,d2=fHasta.value?new Date(fHasta.value):null;
+  return DATA.filter(r=>{const fr=parseFecha(r.freg);
+   return (!ms||r.mes===ms)&&(!e||r.estado===e)&&(!v||r.vitrina===v)&&(!m||r.modelo===m)&&
+    (!q||((r.ot+' '+r.inv).toLowerCase().includes(q)))&&
+    (!d1||(fr&&fr>=d1))&&(!d2||(fr&&fr<=d2));})}
+function groupCount(arr,k){const o={};arr.forEach(r=>{const x=r[k]||'(vacío)';o[x]=(o[x]||0)+1});return o}
+function bar(id,obj,colorFn,horizontal){if(charts[id])charts[id].destroy();
+  const labels=Object.keys(obj),vals=Object.values(obj);
+  charts[id]=new Chart(document.getElementById(id),{type:'bar',
+   data:{labels,datasets:[{data:vals,backgroundColor:labels.map(colorFn),borderRadius:5}]},
+   options:{indexAxis:horizontal?'y':'x',plugins:{legend:{display:false}},
+    scales:{x:{grid:{display:!horizontal},ticks:{font:{size:10}}},y:{grid:{display:horizontal},ticks:{font:{size:10}},beginAtZero:true}},
+    animation:{duration:450}}})}
+function kpi(n,l,c){return `<div class="kpi ${c}"><div class="n">${n}</div><div class="l">${l}</div></div>`}
+function render(){
+  const f=filtered();
+  const tot=f.length, ent=f.filter(r=>r.estado&&r.estado.includes('ENTREGADO')).length;
+  const det=f.filter(r=>r.estado==='ALISTAMIENTO DETENIDO').length;
+  const proc=tot-ent, pct=tot?Math.round(ent/tot*100):0;
+  document.getElementById('kpis').innerHTML=kpi(tot,'Total vehículos','red')+kpi(proc,'En proceso','blue')+kpi(ent,'Entregados','green')+kpi(pct+'%','% Entregado','')+kpi(det,'Detenidos','orange');
+  bar('cEstado',groupCount(f,'estado'),l=>SC[l]||'#999',true);
+  bar('cVitrina',groupCount(f,'vitrina'),()=>'#1F3864',false);
+  bar('cModelo',groupCount(f,'modelo'),()=>'#C8102E',true);
+  document.getElementById('tbody').innerHTML=f.map(r=>`<tr><td>${r.mes}</td><td>${r.ot}</td><td>${r.inv}</td><td>${r.modelo}</td><td>${r.color}</td><td>${r.vitrina}</td><td>${r.cargo}</td><td>${fmtFecha(r.freg)}</td><td><span class="chip" style="background:${chipBg(r.estado)};color:${chipFg(r.estado)}">${r.estado}</span></td><td style="text-align:center">${r.sla}</td><td>${fmtFecha(r.fent)}</td></tr>`).join('');
+  document.getElementById('count').textContent=`Mostrando ${f.length} de ${DATA.length} vehículos`;
+}
+initFilters();render();
+</script>
+</body>
+</html>
