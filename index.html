@@ -88,43 +88,13 @@ tbody tr:hover{background:#f9fafb}
 <div class="toast" id="toast"></div>
 <script>
 let DATA = [{"estado": "2. VEHÍCULO ASIGNADO", "inv": "355846", "modelo": "KICKS P15", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049153", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361267", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049138", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361292", "modelo": "KICKS P16", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049227", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "362927", "modelo": "SENTRA", "vitrina": "PRADO", "color": "GRIS", "cargo": "VITRINA", "ot": "73049229", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361630", "modelo": "KAIT", "vitrina": "PRADO", "color": "GRIS", "cargo": "VITRINA", "ot": "73049230", "sla": 3, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "13158", "modelo": "DEEPAL SO7", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049241", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "345546", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049232", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361300", "modelo": "KICKS P16", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049231", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "357547", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049233", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "363157", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049234", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361669", "modelo": "KAIT", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049235", "sla": 3, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361207", "modelo": "QASHQAI", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049237", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363570", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049249", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363271", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049252", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363256", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "PLATA", "cargo": "CLIENTE", "ot": "73049251", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363297", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049253", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363600", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049254", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363368", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049256", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363471", "modelo": "VERSA", "vitrina": "PRADO", "color": "ROJO", "cargo": "CLIENTE", "ot": "73049257", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363154", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049261", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361680", "modelo": "KAIT", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049258", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "12677", "modelo": "G318", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049262", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "12954", "modelo": "S05", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049259", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "13473", "modelo": "S05", "vitrina": "CIRCUNVALAR", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049260", "sla": 3, "mes": "JUNIO"}];
-const SC={
-  "1. INSPECCIÓN VEHÍCULO":"#9E9E9E",
-  "2. VEHÍCULO ASIGNADO":"#5B9BD5",
-  "3. APLICACIÓN ANTICORROSIVO":"#4A86C7",
-  "4. PROCESO MECÁNICA":"#3B73B9",
-  "5. INSTALACIÓN ACCESORIOS":"#2E63A6",
-  "6. A ESPERAR PARA ASIGNAR A LAVADO":"#7EA6E0",
-  "7. VEHÍCULO ASIGNADO EN LAVADO":"#5A8FD8",
-  "8. PROCESO EMBELLECIMIENTO":"#1F4E8C",
-  "9. ENTREGADO A LOGÍSTICA":"#46A05A",
-  "ALISTAMIENTO DETENIDO":"#E8743B"
-};
-
+const SC={"1. INSPECCIÓN VEHÍCULO":"#9E9E9E","2. VEHÍCULO ASIGNADO":"#5B9BD5","3. APLICACIÓN ANTICORROSIVO":"#4A86C7","4. PROCESO MECÁNICA":"#3B73B9","5. INSTALACIÓN DE ACCESORIOS":"#2E63A6","6. A ESPERAR PARA ASIGNAR A LAVADO":"#7EA6E0","7. VEHÍCULO ASIGNADO A LAVADO":"#5A8FD8","8. PROCESO EMBELLECIMIENTO":"#1F4E8C","ALISTAMIENTO DETENIDO":"#E8743B","9. ENTREGADO A LOGÍSTICA":"#46A05A"};
+const MESES=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE","INICIAL"];
 function norm(s){return (s==null?'':''+s).replace(/\u00a0/g,' ').trim()}
-
-function normEstado(v){
-  v=norm(v).toUpperCase();
-
-  const m=[
-    ["INSPEC","1. INSPECCIÓN VEHÍCULO"],
-    ["ASIGNADO EN LAVADO","7. VEHÍCULO ASIGNADO EN LAVADO"],
-    ["ESPERAR PARA ASIGNAR A LAVADO","6. A ESPERAR PARA ASIGNAR A LAVADO"],
-    ["ANTICORROSIVO","3. APLICACIÓN ANTICORROSIVO"],
-    ["MEC","4. PROCESO MECÁNICA"],
-    ["INSTALAC","5. INSTALACIÓN ACCESORIOS"],
-    ["EMBELLEC","8. PROCESO EMBELLECIMIENTO"],
-    ["DETENIDO","ALISTAMIENTO DETENIDO"],
-    ["ENTREGADO","9. ENTREGADO A LOGÍSTICA"],
-    ["ASIGNADO","2. VEHÍCULO ASIGNADO"]
-  ];
-
-  for(const[k,f]of m)
-    if(v.includes(k))
-      return f;
-
-  return norm(v);
-}
+function normEstado(v){v=norm(v).toUpperCase();
+  const m=[["INSPEC","1. INSPECCIÓN VEHÍCULO"],["ASIGNADO","2. VEHÍCULO ASIGNADO"],["ANTICORROSIVO","3. APLICACIÓN ANTICORROSIVO"],["MEC","4. PROCESO MECÁNICA"],["INSTALAC","5. INSTALACIÓN DE ACCESORIOS"],["AESPERAR","6. A ESPERAR PARA ASIGNAR A LAVADO"],["VEH","7. VEHÍCULO ASIGNADO A LAVADO"],["EMBELLEC","8. PROCESO EMBELLECIMIENTO"],["DETENIDO","ALISTAMIENTO DETENIDO"],["ENTREGADO","9. ENTREGADO A LOGÍSTICA"]];
+  for(const[k,f]of m)if(v.includes(k))return f; return norm(v)}
+  
 function parseFecha(s){s=norm(s);if(!s)return null;
   let m=s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
   if(m){let y=+m[3];if(y<100)y+=2000;return new Date(y,(+m[2])-1,+m[1]);}
