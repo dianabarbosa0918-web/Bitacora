@@ -88,19 +88,32 @@ tbody tr:hover{background:#f9fafb}
 <div class="toast" id="toast"></div>
 <script>
 let DATA = [{"estado": "2. VEHÍCULO ASIGNADO", "inv": "355846", "modelo": "KICKS P15", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049153", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361267", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049138", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361292", "modelo": "KICKS P16", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049227", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "362927", "modelo": "SENTRA", "vitrina": "PRADO", "color": "GRIS", "cargo": "VITRINA", "ot": "73049229", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361630", "modelo": "KAIT", "vitrina": "PRADO", "color": "GRIS", "cargo": "VITRINA", "ot": "73049230", "sla": 3, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "13158", "modelo": "DEEPAL SO7", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049241", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "345546", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049232", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361300", "modelo": "KICKS P16", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049231", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "357547", "modelo": "FRONTIER", "vitrina": "PRADO", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049233", "sla": 5, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "363157", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049234", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361669", "modelo": "KAIT", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049235", "sla": 3, "mes": "JUNIO"}, {"estado": "7. ENTREGADO A LOGÍSTICA", "inv": "361207", "modelo": "QASHQAI", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049237", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363570", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049249", "sla": 5, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363271", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049252", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363256", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "PLATA", "cargo": "CLIENTE", "ot": "73049251", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363297", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049253", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363600", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049254", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363368", "modelo": "VERSA", "vitrina": "PRADO", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049256", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363471", "modelo": "VERSA", "vitrina": "PRADO", "color": "ROJO", "cargo": "CLIENTE", "ot": "73049257", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "363154", "modelo": "VERSA", "vitrina": "CALLE 74", "color": "GRIS", "cargo": "CLIENTE", "ot": "73049261", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "361680", "modelo": "KAIT", "vitrina": "CALLE 74", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049258", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "12677", "modelo": "G318", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049262", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "12954", "modelo": "S05", "vitrina": "CIRCUNVALAR", "color": "NEGRO", "cargo": "CLIENTE", "ot": "73049259", "sla": 3, "mes": "JUNIO"}, {"estado": "2. VEHÍCULO ASIGNADO", "inv": "13473", "modelo": "S05", "vitrina": "CIRCUNVALAR", "color": "BLANCO", "cargo": "CLIENTE", "ot": "73049260", "sla": 3, "mes": "JUNIO"}];
-const SC={"1. INSPECCIÓN VEHÍCULO":"#9E9E9E","2. VEHÍCULO ASIGNADO":"#5B9BD5","3. APLICACIÓN ANTICORROSIVO":"#4A86C7","4. PROCESO MECÁNICA":"#3B73B9","5. INSTALACIÓN DE ACCESORIOS":"#2E63A6","6. A ESPERAR PARA ASIGNAR A LAVADO":"#7EA6E0","7. VEHÍCULO ASIGNADO A LAVADO":"#5A8FD8","8. PROCESO EMBELLECIMIENTO":"#1F4E8C","ALISTAMIENTO DETENIDO":"#E8743B","9. ENTREGADO A LOGÍSTICA":"#46A05A"};
+const SC={"1. INSPECCION VEHICULO":"#9E9E9E","2. VEHICULO ASIGNADO":"#7FB3DE","3. APLICACION ANTICORROSIVO":"#5B9BD5","4. PROCESO MECANICA":"#4A86C7","5. INSTALACION ACCESORIOS":"#3B73B9","6. A ESPERAR PARA ASIGNAR A LAVADO":"#9C82C9","7. VEHICULO ASIGNADO EN LAVADO":"#00A6A6","8. PROCESO EMBELLECIMIENTO":"#1F4E8C","9. ENTREGADO A LOGISTICA":"#46A05A","ALISTAMIENTO DETENIDO":"#E8743B"};
 const MESES=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE","INICIAL"];
 function norm(s){return (s==null?'':''+s).replace(/\u00a0/g,' ').trim()}
 function normEstado(v){v=norm(v).toUpperCase();
-  const m=[["INSPEC","1. INSPECCIÓN VEHÍCULO"],["ASIGNADO","2. VEHÍCULO ASIGNADO"],["ANTICORROSIVO","3. APLICACIÓN ANTICORROSIVO"],["MEC","4. PROCESO MECÁNICA"],["INSTALAC","5. INSTALACIÓN DE ACCESORIOS"],["AESPERAR","6. A ESPERAR PARA ASIGNAR A LAVADO"],["VEH","7. VEHÍCULO ASIGNADO A LAVADO"],["EMBELLEC","8. PROCESO EMBELLECIMIENTO"],["DETENIDO","ALISTAMIENTO DETENIDO"],["ENTREGADO","9. ENTREGADO A LOGÍSTICA"]];
-  for(const[k,f]of m)if(v.includes(k))return f; return norm(v)}
-  
+  if(v.includes("DETENIDO"))return "ALISTAMIENTO DETENIDO";
+  if(v.includes("ENTREGADO"))return "9. ENTREGADO A LOGISTICA";
+  if(v.includes("EMBELLEC"))return "8. PROCESO EMBELLECIMIENTO";
+  if(v.includes("LAVADO")&&v.includes("ASIGNAD"))return "7. VEHICULO ASIGNADO EN LAVADO";
+  if(v.includes("ESPERAR")||(v.includes("ASIGNAR")&&v.includes("LAVADO")))return "6. A ESPERAR PARA ASIGNAR A LAVADO";
+  if(v.includes("INSTALAC"))return "5. INSTALACION ACCESORIOS";
+  if(v.includes("MEC"))return "4. PROCESO MECANICA";
+  if(v.includes("ANTICORROSIVO"))return "3. APLICACION ANTICORROSIVO";
+  if(v.includes("ASIGNAD"))return "2. VEHICULO ASIGNADO";
+  if(v.includes("INSPEC"))return "1. INSPECCION VEHICULO";
+  return norm(v)}
+function groupEstado(arr){const raw=groupCount(arr,'estado');const o={};
+  Object.keys(SC).forEach(k=>{if(raw[k])o[k]=raw[k]});
+  Object.keys(raw).forEach(k=>{if(!(k in o))o[k]=raw[k]});return o}
+
 function parseFecha(s){s=norm(s);if(!s)return null;
   let m=s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
   if(m){let y=+m[3];if(y<100)y+=2000;return new Date(y,(+m[2])-1,+m[1]);}
   let d=new Date(s);return isNaN(d)?null:d;}
 function fmtFecha(s){const d=parseFecha(s);if(!d)return '';
   return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();}
+DATA.forEach(r=>{r.estado=normEstado(r.estado)});
 function chipBg(e){return (SC[e]||"#999")+"22"} function chipFg(e){return SC[e]||"#555"}
 function toast(msg,err){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(err?' err':'');setTimeout(()=>t.className='toast',2600)}
 
@@ -193,7 +206,7 @@ function render(){
   const det=f.filter(r=>r.estado==='ALISTAMIENTO DETENIDO').length;
   const proc=tot-ent, pct=tot?Math.round(ent/tot*100):0;
   document.getElementById('kpis').innerHTML=kpi(tot,'Total vehículos','red')+kpi(proc,'En proceso','blue')+kpi(ent,'Entregados','green')+kpi(pct+'%','% Entregado','')+kpi(det,'Detenidos','orange');
-  bar('cEstado',groupCount(f,'estado'),l=>SC[l]||'#999',true);
+  bar('cEstado',groupEstado(f),l=>SC[l]||'#999',true);
   bar('cVitrina',groupCount(f,'vitrina'),()=>'#1F3864',false);
   bar('cModelo',groupCount(f,'modelo'),()=>'#C8102E',true);
   document.getElementById('tbody').innerHTML=f.map(r=>`<tr><td>${r.mes}</td><td>${r.ot}</td><td>${r.inv}</td><td>${r.modelo}</td><td>${r.color}</td><td>${r.vitrina}</td><td>${r.cargo}</td><td>${fmtFecha(r.freg)}</td><td><span class="chip" style="background:${chipBg(r.estado)};color:${chipFg(r.estado)}">${r.estado}</span></td><td style="text-align:center">${r.sla}</td><td>${fmtFecha(r.fent)}</td></tr>`).join('');
@@ -203,3 +216,5 @@ initFilters();render();
 </script>
 </body>
 </html>
+ 
+
